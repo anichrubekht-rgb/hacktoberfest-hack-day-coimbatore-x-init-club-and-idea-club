@@ -1,69 +1,69 @@
-# [Project Name]
+# [Iora]
 
-> [One-line description of the project and what it does.]
+> [Iora is a mindfulness-focused morning routine web application that helps users set intentional daily goals, track streaks, and maintain focus through integrated tools like a Pomodoro timer, ambient soundscapes, and AI-generated affirmations.]
 
 ## Team
 
-**Team Name:** [Team Name]
+**Team Name:** [Stack Smashers]
 
 
 | Member | Contribution   |
 | ------ | -------------- |
-| [Name] | [Contribution] |
-| [Name] | [Contribution] |
-| [Name] | [Contribution] |
-| [Name] | [Contribution] |
+| [Anich Rubekh. T] | [Team Lead & Project Manager] |
+| [Gokul Krishnan] | [Developer] |
+| [Anirudh Keshav Pravin] | [Developer] |
+| [Sidharth GK] | [Pitch & Presentation] |
 
 
 ## Problem Statement
 
 ### The Problem
 
-[Describe the problem being addressed, who is affected by it, and the context in which it occurs.]
+[Everyone is overwhelmed by multiple tasks to do and because of this, people tend to procrastinate or skip. This is a common problem for a lot of students as well as adults.]
 
 ### Why We Chose This Problem
 
-[Explain why the team selected this problem and why solving it is important.]
+[Its a common problem and it affects the productivity of a person.]
 
 ## Solution
 
-[Describe the proposed solution and how it addresses the problem.]
+[We have created an app which asks the user for 3 important tasks. After the user completes all 3 tasks, will they be allowed to enter 3 more tasks. This helps the user to complete all of their tasks in a systematic way.]
 
 ### Key Features
 
-- [Feature 1]
-- [Feature 2]
-- [Feature 3]
-- [Feature 4]
+- [Timer (Optional)]
+- [Background Music (Optional)]
+- [Streaks]
+- [History]
 
 ## Innovation and Differentiation
 
-[Explain what is innovative about the approach and how it differs from existing or conventional solutions.]
+[Our app only allows the user to focus on a small amount of tasks at a time, which allows them to focus on their main goals without getting distracted or thinking about other tasks.]
 
 ## Technical Implementation
 
 ### Architecture
 
-[Add the system architecture or workflow Mermaid diagram here.]
+[<img width="1266" height="946" alt="image" src="https://github.com/user-attachments/assets/51ca2bf4-208f-4837-b2af-5da3e5f38460" />]
 
 ### Technology Stack
 
 
 | Category        | Technologies                |
 | --------------- | --------------------------- |
-| Frontend        | [Technologies / N/A]        |
-| Backend         | [Technologies / N/A]        |
-| Database        | [Technologies / N/A]        |
-| AI / ML         | [Models / frameworks / N/A] |
-| Infrastructure  | [Technologies / N/A]        |
-| APIs / Services | [Services / N/A]            |
+| Frontend        | [ HTML5, CSS3 (Custom Properties/Variables, Flexbox, Grid), JavaScript (ES6+), Google Fonts (Poppins)]        |
+| Backend         | [N/A (Client-side only / Serverless) ]        |
+| Database        | [Browser LocalStorage (JSON-based persistence)]        |
+| AI / ML         | [Simulated AI Logic (Pattern-matching algorithm for personalized affirmations)     ] |
+| Infrastructure  | [PWA (Progressive Web App) via Service Worker, Manifest.json  ]        |
+| APIs / Services | [ ipapi.co (Geolocation), Open-Meteo (Weather Forecast), SoundHelix/FreeSound (Audio Assets), Canvas-Confetti (Animation Library)  ]            |
 
 
 If a category or technology is not implemented in the project, specify `N/A` instead of leaving the field blank.
 
 ### How It Works
 
-[Explain the major components of the system and how they interact.]
+[The user is asked to enter a task, as well as the reason why it is important. Then, the task will be added to a queue displayed just below. The user can add a timer or background music if required. After the task is completed, it can be crossed off by clicking on the completed task in the queue. If the user wants to check previously completed sets of tasks, they can do so by clicking on the option to check history. ] 
 
 ### Technical Decisions
 
@@ -71,18 +71,18 @@ If a category or technology is not implemented in the project, specify `N/A` ins
 
 ## Implementation During the Hackathon
 
-[Describe what the team built during the Hack Day and the major functionality or components completed during the event.]
+[We built the whole app during the hackday  ]
 
 ### Team Contributions
 
-- **[Member Name]:** [Contribution]
-- **[Member Name]:** [Contribution]
-- **[Member Name]:** [Contribution]
-- **[Member Name]:** [Contribution]
+- **[Anich Rubekh T]:** [Team Lead & Project Manager]
+- **[Gokul Krishnan]:** [Developer]
+- **[Anirudh Keshav Pravin]:** [Developer]
+- **[Sidharth GK]:** [Pitch & Presentation]
 
 ## Working Application
 
-**Live Application:** [Live URL]
+**Live Application:** []
 
 [Briefly explain how the deployed application can be accessed and what functionality can be tested.]
 
@@ -98,13 +98,13 @@ The submitted application should be functional and accessible through the provid
 
 ### AI / Models
 
-- **[Model]:** [How it is used]
+- **[Claude Code]:** [To create code]
 
 ### Open Source Components
 
-- **[Library / Framework]:** [Purpose]
-- **[Dataset]:** [Purpose]
-- **[API / Service]:** [Purpose]
+- **[Ollama]:** [to run Claude code]
+- **[Dataset]:** [N/A]
+- **[API / Service]:** [N/A]
 
 [Include relevant licenses, attribution, and acknowledgements for external components.]
 
@@ -112,50 +112,17 @@ The submitted application should be functional and accessible through the provid
 
 ### Prerequisites
 
-- [Requirement]
-- [Requirement]
-
-### Installation
-
-```bash
-git clone [repository-url]
-cd [project-directory]
-[installation-command]
-```
-
-### Environment Variables
-
-```env
-[VARIABLE_NAME]=[value]
-```
-
-
-
-### Running the Project
-
-```bash
-[run-command]
-```
+- [Ollama]
+- [Claude Code]
 
 ### Usage
 
-[Explain the basic steps required to use the project.]
+[Enter the tasks. After finishing task, cross it off. After all tasks are finished, enter new tasks.]
 
 ## Devpost Submission
 
-**Devpost Project:** [Devpost Project URL]
+**Devpost Project:** [https://dev.to/anich_rubekh_87c16ba3a07d/iora-4jm7]
 
-[Add the link to the team's Devpost submission. Ensure the Devpost project page is complete and contains the required project information, links, media, and team details.]
-
-## Credits and License
-
-### Credits
-
-[Credit libraries, frameworks, datasets, models, APIs, contributors, and other external resources used.]
-
-### License
-
-[License name and/or link.]
 
 ## Submission Checklist
 
