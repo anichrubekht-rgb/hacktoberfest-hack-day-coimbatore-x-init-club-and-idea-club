@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iora | Intentional Mornings</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+:root {
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --glass: rgba(255, 255, 255, .7);
+  --glass-border: rgba(255, 255, 255, .3);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --accent-gold: #fbbf24;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  color: var(--text-main);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  transition: all 1s ease;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* THEMES */
+body.theme-morning {
+  background: linear-gradient(45deg, #eef2ff, #fdf2f8, #f0f9ff, #eef2ff);
+  background-size: 400% 400%;
+}
+
+body.theme-deepwork {
+  background: linear-gradient(45deg, #1e1b4b, #312e81, #1e1b4b, #4338ca);
+  background-size: 400% 400%;
+  color: #f8fafc;
+}
+body.theme-deepwork .glass-card { background: rgba(15, 23, 42, .6); color: #fff; }
+body.theme-deepwork .brief-label,
+body.theme-deepwork #affirmation,
+body.theme-deepwork .goal-why { color: #94a3b8; }
+body.theme-deepwork #greeting {
+  background: linear-gradient(to right, #818cf8, #c084fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body.theme-deepwork .brief-item,
+body.theme-deepwork .timer-section,
+body.theme-deepwork .timer-panel {
+  background: rgba(255, 255, 255, .05);
+  border-color: rgba(255, 255, 255, .1);
+}
+body.theme-deepwork input {
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, .2);
+}
+body.theme-deepwork li {
+  background: rgba(255, 255, 255, .05);
+  border-color: rgba(255, 255, 255, .1);
+  color: #fff;
+}
+body.theme-deepwork li:hover { background: rgba(255, 255, 255, .12); }
+body.theme-deepwork #vibe-suggestion { color: #c7d2fe; }
+body.theme-deepwork #history-btn { color: #fff; background: rgba(255, 255, 255, .1); }
+body.theme-deepwork .timer-close { color: #fff; }
+
+body.theme-zen {
+  background: linear-gradient(45deg, #f0fdf4, #dcfce7, #fefce8, #f0fdf4);
+  background-size: 400% 400%;
+}
+
+.glass-card {
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  padding: 3rem;
+  border-radius: 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .1);
+  width: min(90%, 480px);
+  flex: 0 1 480px;
+  text-align: center;
+  animation: cardAppear 1s cubic-bezier(.22, 1, .36, 1);
+  position: relative;
+  z-index: 10;
+  margin: 2rem 0;
+}
+
+.app-layout {
+  width: min(100%, 1080px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 24px;
+  padding: 0 16px;
+  margin: 0 auto;
+}
+
+@keyframes cardAppear {
+  from { opacity: 0; transform: scale(.9) translateY(30px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.streak-badge {
+  position: absolute;
+  top: -18px;
+  right: 20px;
+  background: var(--accent-gold);
+  color: #78350f;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: .9rem;
+  box-shadow: 0 4px 15px rgba(251, 191, 36, .4);
+  animation: float 3s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+#greeting {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: .2rem;
+  background: linear-gradient(to right, #4f46e5, #9333ea);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#affirmation {
+  font-style: italic;
+  font-size: .9rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  line-height: 1.4;
+  min-height: 40px;
+}
+
+.briefing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.brief-item {
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, .4);
+}
+
+.brief-label {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.brief-value {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+#vibe-suggestion {
+  background: rgba(99, 102, 241, .1);
+  border: 1px solid rgba(99, 102, 241, .2);
+  padding: 12px;
+  border-radius: 12px;
+  font-size: .85rem;
+  margin-bottom: 2rem;
+  color: #4338ca;
+  font-weight: 500;
+}
+
+.timer-section {
+  margin: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .4);
+}
+
+.timer-panel {
+  flex: 0 0 0;
+  width: 0;
+  max-height: min(90vh, 760px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 24px;
+  background: var(--glass);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, .1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(20px);
+  margin-top: 2rem;
+  transition: flex-basis .35s ease, width .35s ease, padding .35s ease,
+    opacity .25s ease, transform .35s ease, visibility .35s;
+}
+
+.app-layout.timer-open .timer-panel {
+  flex-basis: min(360px, 36vw);
+  width: min(360px, 36vw);
+  padding: 1rem;
+  border-color: var(--glass-border);
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.timer-panel-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: .75rem;
+}
+
+.timer-close {
+  padding: 4px 10px;
+  background: transparent;
+  color: var(--text-main);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.timer-close:hover {
+  background: rgba(99, 102, 241, .1);
+  transform: none;
+}
+
+.timer-section h2 {
+  margin: 0 0 .75rem;
+  font-size: 1.1rem;
+}
+
+.timer-ring {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1rem;
+}
+
+.timer-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-track, .timer-progress {
+  fill: none;
+  stroke-width: 8;
+}
+
+.timer-track {
+  stroke: rgba(99, 102, 241, .14);
+}
+
+.timer-progress {
+  stroke: var(--primary);
+  stroke-linecap: round;
+  transition: stroke-dashoffset .25s linear;
+}
+
+.timer-time {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.timer-settings {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 1rem;
+  font-size: .8rem;
+}
+
+.timer-settings label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted);
+}
+
+.timer-settings input {
+  width: 55px;
+  padding: 5px;
+  text-align: center;
+}
+
+.timer-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.input-area {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.input-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+input {
+  padding: 14px;
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  transition: all .3s ease;
+  background: rgba(255, 255, 255, .5);
+}
+
+input:focus {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, .1);
+}
+
+button {
+  padding: 14px 24px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: all .3s ease;
+}
+
+button:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  transform: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+li {
+  background: rgba(255, 255, 255, .6);
+  margin-bottom: 12px;
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  transition: all .3s ease;
+  animation: slideIn .5s ease-out forwards;
+}
+
+li:hover {
+  background: #fff;
+  transform: translateX(5px);
+}
+
+.goal-text {
+  display: block;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.goal-why {
+  display: block;
+  font-size: .75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.completed {
+  opacity: .5;
+  filter: grayscale(1);
+}
+
+.completed .goal-text {
+  text-decoration: line-through;
+}
+
+.empty-msg {
+  text-align: center;
+  color: #aaa;
+  font-size: .9rem;
+  margin-top: 1rem;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#reset-btn {
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid #fecaca;
+  font-size: .8rem;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+#history-btn {
+  background: rgba(0, 0, 0, .05);
+  color: var(--text-main);
+  border: 1px solid rgba(0, 0, 0, .1);
+  font-size: .8rem;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+#share-btn {
+  background: #1da1f2;
+  color: #fff;
+  font-size: .8rem;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.theme-switcher {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.theme-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .15);
+  transition: transform .2s;
+}
+
+.theme-dot:hover {
+  transform: scale(1.2);
+}
+
+/* SOUNDSCAPE MENU */
+.sound-menu {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+  font-size: .75rem;
+  flex-wrap: wrap;
+}
+
+.sound-btn {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, .5);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all .3s;
+  color: var(--text-main);
+}
+
+.sound-btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.history-panel {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: min(380px, 100%);
+  height: 100vh;
+  background: rgba(255, 255, 255, .95);
+  color: var(--text-main);
+  backdrop-filter: blur(20px);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, .1);
+  transition: right .4s cubic-bezier(.22, 1, .36, 1);
+  z-index: 100;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-panel.open {
+  right: 0;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.rewards-section {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.badge {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  filter: grayscale(1);
+  opacity: .3;
+  transition: all .5s ease;
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.badge.unlocked {
+  filter: grayscale(0);
+  opacity: 1;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 10px rgba(251, 191, 36, .5);
+  background: #fff;
+}
+
+.badge-label {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: .6rem;
+  text-align: center;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.history-list {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.history-item {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid #eee;
+  text-align: left;
+}
+
+.history-date {
+  font-size: .7rem;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.history-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: .75rem;
+}
+
+.continue-btn, .delete-history-btn {
+  flex: 1;
+  padding: .65rem;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.75rem;
+}
+
+.delete-history-btn {
+  background: #fff1f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.delete-history-btn:hover {
+  background: #fee2e2;
+}
+
+.history-empty {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: .9rem;
+  margin-top: 1rem;
+}
+
+.close-history {
+  cursor: pointer;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--text-main);
+  padding: 0;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 760px) {
+  .app-layout {
+    display: block;
+    width: 100%;
+    padding: 0 12px;
+  }
+
+  .glass-card {
+    width: min(100%, 480px);
+    margin: 2rem auto;
+  }
+
+  .timer-panel {
+    position: fixed;
+    z-index: 90;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin-top: 0;
+    width: min(380px, 92vw);
+    max-height: none;
+    overflow-y: auto;
+    border-radius: 24px 0 0 24px;
+    transform: translateX(100%);
+    transition: transform .35s ease, visibility .35s;
+  }
+
+  .app-layout.timer-open .timer-panel {
+    width: min(380px, 92vw);
+    padding: 1rem;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timer-panel, .glass-card { transition-duration: .01ms; }
+}
+</style>
+</head>
+<body class="theme-morning">
+
+<main class="app-layout" id="app-layout">
+<div class="glass-card">
+  <div class="streak-badge" id="streak-badge"><span id="streak-count">0</span> Day Streak</div>
+  <div id="greeting">Good Morning</div>
+  <div id="affirmation">Loading your daily intention...</div>
+
+  <div class="theme-switcher">
+    <div class="theme-dot" style="background:#eef2ff" onclick="setTheme('morning')" title="Morning Glow"></div>
+    <div class="theme-dot" style="background:#1e1b4b" onclick="setTheme('deepwork')" title="Deep Work"></div>
+    <div class="theme-dot" style="background:#f0fdf4" onclick="setTheme('zen')" title="Zen Garden"></div>
+  </div>
+
+  <div class="sound-menu" id="sound-menu">
+    <button class="sound-btn" onclick="setSound('lofi', this)">LoFi</button>
+    <button class="sound-btn" onclick="setSound('rain', this)">Rain</button>
+    <button class="sound-btn" onclick="setSound('forest', this)">Forest</button>
+    <button class="sound-btn" onclick="setSound('none', this)">Off</button>
+  </div>
+
+  <div class="briefing-grid">
+    <div class="brief-item"><span class="brief-label">Date</span><span class="brief-value" id="date-val">...</span></div>
+    <div class="brief-item"><span class="brief-label">Weather</span><span class="brief-value" id="weather-val">...</span></div>
+  </div>
+
+  <div id="vibe-suggestion">Analyzing your day's vibe...</div>
+
+  <div class="input-area">
+    <div class="input-row">
+      <input type="text" id="goal-input" class="main-input" placeholder="What is the goal?">
+      <button id="add-btn">Set</button>
+    </div>
+    <input type="text" id="why-input" class="why-input" placeholder="Why is this important today?">
+  </div>
+
+  <ul id="goal-list"></ul>
+
+  <div class="card-footer">
+    <button id="history-btn">Journey</button>
+    <button id="share-btn">Share Win</button>
+    <button id="timer-open-btn" aria-expanded="false" aria-controls="timer-panel">Focus Timer</button>
+    <button id="reset-btn">Reset</button>
+  </div>
+</div>
+
+<aside class="timer-panel" id="timer-panel" aria-label="Focus timer" aria-hidden="true" inert>
+  <div class="timer-panel-header">
+    <button class="timer-close" id="timer-close-btn" type="button" aria-label="Close focus timer">&times;</button>
+  </div>
+  <section class="timer-section">
+    <h2>Focus Timer</h2>
+    <div class="timer-ring">
+      <svg viewBox="0 0 120 120">
+        <circle class="timer-track" cx="60" cy="60" r="54"></circle>
+        <circle class="timer-progress" id="timer-progress" cx="60" cy="60" r="54"></circle>
+      </svg>
+      <div class="timer-time" id="timer-display">00:00:00</div>
+    </div>
+    <div class="timer-settings">
+      <label>Hours <input type="number" id="timer-hours" value="0" min="0" max="99" step="1"></label>
+      <label>Mins <input type="number" id="timer-minutes" value="0" min="0" max="59" step="1"></label>
+      <label>Secs <input type="number" id="timer-seconds" value="0" min="0" max="59" step="1"></label>
+    </div>
+    <div class="timer-actions">
+      <button id="timer-toggle">Start</button>
+      <button id="timer-reset">Reset</button>
+    </div>
+  </section>
+</aside>
+</main>
+
+<div class="history-panel" id="history-panel">
+  <div class="history-header">
+    <span style="font-weight:700;font-size:1.2rem">Journey Log</span>
+    <button class="close-history" id="close-history">&times;</button>
+  </div>
+  <div class="rewards-section" id="rewards-grid">
+    <div class="badge" id="badge-3" title="3 Day Streak"><span class="badge-emoji" aria-hidden="true">🥉</span><span class="badge-label">Consistent</span></div>
+    <div class="badge" id="badge-7" title="7 Day Streak"><span class="badge-emoji" aria-hidden="true">🥈</span><span class="badge-label">Iron Will</span></div>
+    <div class="badge" id="badge-30" title="30 Day Streak"><span class="badge-emoji" aria-hidden="true">🥇</span><span class="badge-label">Master</span></div>
+  </div>
+  <div class="history-list" id="history-list"></div>
+</div>
+
+<audio id="audio-player" loop></audio>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const goalInput = $('goal-input'), whyInput = $('why-input'), addBtn = $('add-btn'), goalList = $('goal-list');
+const resetBtn = $('reset-btn'), historyBtn = $('history-btn'), shareBtn = $('share-btn');
+const historyPanel = $('history-panel'), closeHistory = $('close-history'), historyList = $('history-list');
+const appLayout = $('app-layout'), timerPanel = $('timer-panel');
+const timerOpenButton = $('timer-open-btn'), timerCloseButton = $('timer-close-btn');
+const greeting = $('greeting'), dateVal = $('date-val'), weatherVal = $('weather-val');
+const vibeDiv = $('vibe-suggestion'), affDiv = $('affirmation'), streakCountDisplay = $('streak-count');
+
+function load(key, fallback) {
+  try {
+    const v = localStorage.getItem(key);
+    return v === null ? fallback : JSON.parse(v);
+  } catch {
+    return fallback;
+  }
+}
+function save(key, val) {
+  try {
+    localStorage.setItem(key, JSON.stringify(val));
+  } catch {}
+}
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// THEME & SOUNDSCAPES
+const SOUND_MAP = {
+  lofi: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+  rain: 'https://cdn.freesound.org/previews/512/512133_6687700-lq.mp3',
+  forest: 'https://cdn.freesound.org/previews/416/416529_5121236-lq.mp3',
+  none: ''
+};
+
+function setTheme(theme) {
+  document.body.className = 'theme-' + theme;
+  save('compassTheme', theme);
+}
+
+function setSound(sound, btn) {
+  const player = $('audio-player');
+  if (sound !== 'none' && SOUND_MAP[sound]) {
+    player.src = SOUND_MAP[sound];
+    player.play().catch(() => {});
+  } else {
+    player.pause();
+    player.removeAttribute('src');
+  }
+
+  document.querySelectorAll('.sound-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  save('compassSound', sound);
+}
+
+// STATE
+let goals = load('myEliteGoals', []);
+let journeyLog = load('compassHistory', []);
+let streak = load('compassStreak', 0);
+let lastCompletedDate = load('lastCompletedDate', '');
+
+// AI AFFIRMATIONS
+async function fetchAffirmation() {
+  if (goals.length === 0) {
+    affDiv.innerText = "Set your goals for a personalized AI intention...";
+    return;
+  }
+
+  affDiv.innerText = "AI is crafting your intention...";
+
+  const simulateAI = async (userGoals) => {
+    await new Promise(r => setTimeout(r, 800));
+    const themes = userGoals.map(g => g.text.toLowerCase());
+    if (themes.some(t => t.includes('work') || t.includes('study') || t.includes('code'))) {
+      return "Channel your focus; the mountain is climbed one step at a time.";
+    }
+    if (themes.some(t => t.includes('health') || t.includes('gym') || t.includes('run'))) {
+      return "Your body is your foundation. Treat it with strength and kindness today.";
+    }
+    if (themes.some(t => t.includes('kind') || t.includes('love') || t.includes('family'))) {
+      return "Radiate positivity. Your kindness creates ripples that touch everyone.";
+    }
+    return "You are the architect of your day. Build it with intention.";
+  };
+
+  try {
+    affDiv.innerText = `"${await simulateAI(goals)}"`;
+  } catch {
+    affDiv.innerText = '"Focus on progress, not perfection."';
+  }
+}
+
+// TIMER
+const CIRC = 2 * Math.PI * 54;
+const MAX_TIMER_SECONDS = 99 * 3600 + 59 * 60 + 59;
+const ring = $('timer-progress');
+ring.style.strokeDasharray = CIRC;
+const savedTimerSeconds = Number(load('compassTimerSecondsV2', 0));
+let timerDurationSeconds = Number.isInteger(savedTimerSeconds) && savedTimerSeconds >= 0 && savedTimerSeconds <= MAX_TIMER_SECONDS
+  ? savedTimerSeconds
+  : 0;
+let timerRemainingMs = timerDurationSeconds * 1000;
+let timerDeadline = 0, timerInterval = null, timerRunning = false;
+
+function formatTimerTime(s) {
+  const h = Math.floor(s / 3600).toString().padStart(2, '0');
+  const m = Math.floor((s % 3600) / 60).toString().padStart(2, '0');
+  const sec = (s % 60).toString().padStart(2, '0');
+  return `${h}:${m}:${sec}`;
+}
+
+function renderTimer() {
+  const rem = timerRunning ? Math.max(0, timerDeadline - Date.now()) : timerRemainingMs;
+  const progress = timerDurationSeconds > 0 ? rem / (timerDurationSeconds * 1000) : 0;
+  $('timer-display').textContent = formatTimerTime(Math.ceil(rem / 1000));
+  ring.style.strokeDashoffset = CIRC * (1 - progress);
+  $('timer-toggle').textContent = timerRunning ? 'Pause' : (timerDurationSeconds === 0 ? 'Start' : rem <= 0 ? 'Finished' : rem < timerDurationSeconds * 1000 ? 'Resume' : 'Start');
+}
+
+function readTimerInputs() {
+  const units = [
+    { input: $('timer-hours'), max: 99 },
+    { input: $('timer-minutes'), max: 59 },
+    { input: $('timer-seconds'), max: 59 }
+  ];
+  let invalidInput = null;
+  units.forEach(({ input, max }) => {
+    const value = Number(input.value);
+    const valid = input.value.trim() !== '' && Number.isInteger(value) && value >= 0 && value <= max;
+    input.setCustomValidity(valid ? '' : `Enter a whole number from 0 to ${max}.`);
+    if (!valid && !invalidInput) invalidInput = input;
+  });
+  const h = Number($('timer-hours').value);
+  const m = Number($('timer-minutes').value);
+  const s = Number($('timer-seconds').value);
+  const durationSeconds = h * 3600 + m * 60 + s;
+  if (invalidInput) {
+    invalidInput.reportValidity();
+    return false;
+  }
+  timerDurationSeconds = durationSeconds;
+  timerRemainingMs = timerDurationSeconds * 1000;
+  save('compassTimerSecondsV2', timerDurationSeconds);
+  return true;
+}
+
+function setTimerInputs() {
+  $('timer-hours').value = Math.floor(timerDurationSeconds / 3600);
+  $('timer-minutes').value = Math.floor((timerDurationSeconds % 3600) / 60);
+  $('timer-seconds').value = timerDurationSeconds % 60;
+}
+
+function startPauseTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRemainingMs = Math.max(0, timerDeadline - Date.now());
+    timerRunning = false;
+  } else {
+    if (timerRemainingMs <= 0) {
+      if (!readTimerInputs()) return;
+      if (timerDurationSeconds === 0) {
+        $('timer-seconds').setCustomValidity('Set a timer of at least one second.');
+        $('timer-seconds').reportValidity();
+        return;
+      }
+    }
+    timerDeadline = Date.now() + timerRemainingMs;
+    timerRunning = true;
+    timerInterval = setInterval(() => {
+      timerRemainingMs = Math.max(0, timerDeadline - Date.now());
+      renderTimer();
+      if (timerRemainingMs === 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        renderTimer();
+      }
+    }, 250);
+  }
+  renderTimer();
+}
+
+function resetTimer() {
+  if (!readTimerInputs()) return;
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerRemainingMs = timerDurationSeconds * 1000;
+  renderTimer();
+}
+
+// GOALS & STREAKS
+function updateStreak() {
+  const today = new Date().toDateString();
+  if (lastCompletedDate !== today && lastCompletedDate !== '') {
+    const y = new Date();
+    y.setDate(y.getDate() - 1);
+    if (lastCompletedDate !== y.toDateString() && streak !== 0) {
+      streak = 0;
+      save('compassStreak', streak);
+    }
+  }
+  streakCountDisplay.innerText = streak;
+  updateBadges();
+}
+
+function incrementStreak() {
+  const today = new Date().toDateString();
+  if (lastCompletedDate !== today) {
+    streak++;
+    lastCompletedDate = today;
+    save('compassStreak', streak);
+    save('lastCompletedDate', lastCompletedDate);
+    streakCountDisplay.innerText = streak;
+    updateBadges();
+  }
+}
+
+function updateBadges() {
+  [[3, 'badge-3'], [7, 'badge-7'], [30, 'badge-30']].forEach(([n, id]) => {
+    const el = $(id);
+    if (el) el.classList.toggle('unlocked', streak >= n);
+  });
+}
+
+function renderGoals() {
+  goalList.innerHTML = '';
+  if (goals.length === 0) {
+    goalList.innerHTML = '<p class="empty-msg">Your compass is empty. Set your intentions.</p>';
+  }
+  goals.forEach((g, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="goal-text">${esc(g.text)}</span><span class="goal-why">${esc(g.why)}</span>`;
+    if (g.completed) li.classList.add('completed');
+    li.onclick = () => {
+      goals[i].completed = !goals[i].completed;
+      saveAndRender();
+      if (goals.length === 3 && goals.every(x => x.completed)) {
+        if (window.confetti) {
+          confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+        }
+        incrementStreak();
+      }
+    };
+    goalList.appendChild(li);
+  });
+  const limit = goals.length >= 3;
+  addBtn.disabled = limit;
+  goalInput.disabled = limit;
+  whyInput.disabled = limit;
+  goalInput.placeholder = limit ? 'Compass Full' : 'What is the goal?';
+}
+
+function addGoal() {
+  const text = goalInput.value.trim(), why = whyInput.value.trim();
+  if (text && goals.length < 3) {
+    goals.push({ text, why: why || 'No specific reason provided', completed: false });
+    goalInput.value = '';
+    whyInput.value = '';
+    saveAndRender();
+    fetchAffirmation();
+  }
+}
+
+function saveAndRender() {
+  save('myEliteGoals', goals);
+  renderGoals();
+}
+
+// SHARING
+function shareWin() {
+  const date = new Date().toDateString();
+  const goalTexts = goals.map(g => `\n- ${g.completed ? '[x]' : '[ ]'} ${g.text}`).join('');
+  const text = `My Iora Journey for ${date}:\n${goalTexts}\n\nStreak: ${streak} Days!\n#Iora #Intentionality`;
+  navigator.clipboard.writeText(text).then(() => {
+    alert("Daily Win copied to clipboard! Share it with your circle.");
+  }).catch(() => {
+    alert("Unable to copy to clipboard.");
+  });
+}
+
+// WEATHER & BRIEFING
+async function initWeather() {
+  try {
+    const res = await fetch('https://ipapi.co/json/');
+    const loc = await res.json();
+    if (loc.latitude == null) throw new Error();
+    const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&current=temperature_2m,weather_code`);
+    const wData = await wRes.json();
+    weatherVal.innerText = `${Math.round(wData.current.temperature_2m)}°C`;
+    const code = wData.current.weather_code;
+    const rainy = (code >= 51 && code <= 67) || (code >= 80 && code <= 99);
+    vibeDiv.innerText = rainy ? 'Rainy vibe: Deep work time.' : code <= 2 ? 'Sunny vibe: Tackle the hard stuff!' : 'Mellow vibe: Steady progress wins.';
+  } catch {
+    weatherVal.innerText = 'Offline';
+    vibeDiv.innerText = 'Make today count.';
+  }
+}
+
+function updateBriefing() {
+  const now = new Date(), h = now.getHours();
+  greeting.innerText = h < 12 ? 'Good Morning' : h < 18 ? 'Good Afternoon' : 'Good Evening';
+  dateVal.innerText = now.toDateString();
+}
+
+function archiveDay() {
+  if (goals.length === 0) return;
+  journeyLog.unshift({ date: new Date().toDateString(), goals: goals.map(g => ({ ...g })) });
+  save('compassHistory', journeyLog);
+}
+
+function renderHistory() {
+  historyList.innerHTML = '';
+  if (journeyLog.length === 0) {
+    historyList.innerHTML = '<p class="history-empty">No past journeys recorded yet.</p>';
+    return;
+  }
+  journeyLog.forEach((record, i) => {
+    const div = document.createElement('div');
+    div.className = 'history-item';
+    div.innerHTML = `<span class="history-date">${esc(record.date)}</span><div style="font-weight:600;margin-bottom:8px">Daily Focus</div><div style="margin-bottom:12px">${record.goals.map(g => `<div style="font-size:.8rem">- ${esc(g.text)}</div>`).join('')}</div><div class="history-actions"><button class="continue-btn" onclick="continueDay(${i})">Continue</button><button class="delete-history-btn" onclick="deleteHistoryEntry(${i})">Delete</button></div>`;
+    historyList.appendChild(div);
+  });
+}
+
+function deleteHistoryEntry(i) {
+  if (!Number.isInteger(i) || i < 0 || i >= journeyLog.length) return;
+  if (!confirm('Delete this saved day?')) return;
+  journeyLog.splice(i, 1);
+  save('compassHistory', journeyLog);
+  renderHistory();
+}
+
+function continueDay(i) {
+  if (!Number.isInteger(i) || i < 0 || i >= journeyLog.length) return;
+  goals = journeyLog[i].goals.map(g => ({ ...g, completed: false }));
+  saveAndRender();
+  historyPanel.classList.remove('open');
+}
+
+// EVENTS
+function setTimerPanelOpen(open) {
+  appLayout.classList.toggle('timer-open', open);
+  timerOpenButton.setAttribute('aria-expanded', String(open));
+  timerPanel.setAttribute('aria-hidden', String(!open));
+  timerPanel.inert = !open;
+  if (open) timerCloseButton.focus();
+  else timerOpenButton.focus();
+}
+
+addBtn.onclick = addGoal;
+[goalInput, whyInput].forEach(el => el.addEventListener('keydown', e => { if (e.key === 'Enter') addGoal(); }));
+resetBtn.onclick = () => { if (confirm('Reset?')) { archiveDay(); goals = []; saveAndRender(); } };
+historyBtn.onclick = () => { renderHistory(); historyPanel.classList.add('open'); };
+closeHistory.onclick = () => historyPanel.classList.remove('open');
+shareBtn.onclick = shareWin;
+timerOpenButton.onclick = () => setTimerPanelOpen(!appLayout.classList.contains('timer-open'));
+timerCloseButton.onclick = () => setTimerPanelOpen(false);
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && appLayout.classList.contains('timer-open')) {
+    setTimerPanelOpen(false);
+  }
+});
+$('timer-toggle').onclick = startPauseTimer;
+$('timer-reset').onclick = resetTimer;
+
+['timer-hours', 'timer-minutes', 'timer-seconds'].forEach(id => {
+  $(id).addEventListener('change', () => {
+    readTimerInputs();
+    renderTimer();
+  });
+});
+
+window.setTheme = setTheme;
+window.setSound = setSound;
+window.continueDay = continueDay;
+window.deleteHistoryEntry = deleteHistoryEntry;
+
+// PWA SERVICE WORKER REGISTRATION
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('SW Registered', reg))
+      .catch(err => console.log('SW Registration Failed', err));
+  });
+}
+
+// INIT
+const savedTheme = load('compassTheme', 'morning');
+setTheme(savedTheme);
+const savedSound = load('compassSound', 'lofi');
+setSound(savedSound, document.querySelector(`.sound-btn[onclick*="${savedSound}"]`));
+updateBriefing();
+initWeather();
+renderGoals();
+fetchAffirmation();
+updateStreak();
+setTimerInputs();
+renderTimer();
+</script>
+</body>
+</html>
